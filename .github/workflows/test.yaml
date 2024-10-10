@@ -12,6 +12,7 @@ jobs:
     permissions:
       pull-requests: write
     steps:
+      - uses: actions/checkout@v4
       - name: Update PR title
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
