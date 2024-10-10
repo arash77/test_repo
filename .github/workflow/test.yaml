@@ -6,6 +6,7 @@ on:
     branches:
       - "release_**"
 
+
 jobs:
   update-title:
     runs-on: ubuntu-latest
