@@ -1,10 +1,8 @@
-name: Update PR Title If Target Branch Is A Version Branch
+name: Update 
 
 on:
   pull_request_target:
     types: [opened, edited, reopened]
-    branches:
-      - "release_**"
 
 jobs:
   update-title:
