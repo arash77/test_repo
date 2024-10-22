@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+
 env:
   CMEMS_PASSWORD: ${{ secrets.CMEMS_PASSWORD }}
 
