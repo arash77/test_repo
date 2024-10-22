@@ -1,9 +1,8 @@
 import os
 
-# Get the environment variable
 cmems_password = os.getenv('CMEMS_PASSWORD')
 
-if cmems_password is None:
+if cmems_password is None or cmems_password == "":
     print("CMEMS_PASSWORD is not set!")
 else:
-    print("CMEMS_PASSWORD retrieved successfully.", cmems_password)
+    print(f"CMEMS_PASSWORD retrieved successfully: {cmems_password}")
