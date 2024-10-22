@@ -1,8 +1,10 @@
 name: Update
 
 on:
-  pull_request_target:
-    types: [opened, edited, reopened]
+  pull_request:
+  push:
+    branches:
+      - main
 
 env:
   CMEMS_PASSWORD: ${{ secrets.CMEMS_PASSWORD }}
