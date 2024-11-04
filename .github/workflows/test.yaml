@@ -14,8 +14,8 @@ jobs:
         with:
           app-id: 917566
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: "ERGA-consortium"
-          repositories: "EARs"
+          owner: "arash77"
+          repositories: "test_repo"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,4 +34,4 @@ jobs:
           file_pattern: "*.csv"
           branch: main
         env:
-          token: ${{ steps.generate-token.outputs.token }}"
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
