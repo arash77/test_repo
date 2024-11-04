@@ -33,3 +33,6 @@ jobs:
         with:
           file_pattern: "*.csv"
           branch: main
+          commit_message: "Add test.csv"
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}"
