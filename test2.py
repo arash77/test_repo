@@ -25,7 +25,7 @@ processed_files_branch = "processed_files"
 
 try:
     branch = repo.get_branch(processed_files_branch)
-except github.UnknownObjectException:
+except:
     repo.create_git_ref(
         ref=f"refs/heads/{processed_files_branch}",
         sha=repo.get_branch("main").commit.sha,
