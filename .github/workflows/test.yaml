@@ -1,4 +1,4 @@
-name: Update PR Title If Target Branch Is A Version Branch
+name: Update PR title
 
 on:
   pull_request_target:
@@ -8,18 +8,18 @@ on:
 
 jobs:
   update-title:
+    if: github.event.action != 'edited' || github.event.changes.base.ref.from != ''
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
       - name: Update PR title
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          TARGET_BRANCH: "${{ github.base_ref }}"
+          PR_TITLE: "${{ github.event.pull_request.title }}"
         run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          TARGET_BRANCH="${{ github.base_ref }}"
-          PR_TITLE="${{ github.event.pull_request.title }}"
           VERSION=$(echo $TARGET_BRANCH | grep -oP '\d+\.\d+')
           if [[ -n "$VERSION" && ! "$PR_TITLE" =~ ^\[$VERSION\] ]]; then
             NEW_TITLE="[$VERSION] $PR_TITLE"
