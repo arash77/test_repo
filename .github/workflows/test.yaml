@@ -19,7 +19,7 @@ jobs:
           PR_TITLE: "${{ github.event.pull_request.title }}"
           REPO: "${{ github.repository }}"
         run: |
-          VERSION=$(echo $TARGET_BRANCH | grep -oP 'release_\K.*')
+          VERSION=$(echo $TARGET_BRANCH | grep -oP 'release_\K.*' || true)
           if [[ -n "$VERSION" ]]; then
             NEW_TITLE="[$VERSION] ${PR_TITLE#*\] }"
           else
