@@ -1,0 +1,32 @@
+name: Keepalive job
+
+on:
+  workflow_dispatch:
+
+jobs:
+  keepalive-job:
+    name: Keepalive Workflow
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Keep the repository alive
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin keepalive; then
+            git fetch origin keepalive
+            git checkout keepalive
+          else
+            git switch --orphan keepalive
+            git rm -rf . || true
+          fi
+
+          echo "Keep-alive job executed at $(date)" > keepalive.log
+          git add -f keepalive.log
+          git commit -m "chore: keepalive ping $(date)"
+          git push origin keepalive
