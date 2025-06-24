@@ -4,10 +4,22 @@ import os
 from datetime import datetime
 
 import requests
+from dateutil.parser import parse
 from github import Github
 
 starts_with = os.getenv("STARTS_WITH", "").strip()
 given_history_id = os.getenv("HISTORY_ID", "").strip()
+since_str = os.getenv("SINCE_DATE", "").strip()
+since_date = parse(since_str).date() if since_str else None
+
+if given_history_id:
+    print(f"Using history ID: '{given_history_id}'")
+else:
+    if starts_with:
+        print(f"Filtering histories starting with: '{starts_with}'")
+    if since_date:
+        print(f"Filtering histories since date: '{since_date.strftime('%Y-%m-%d')}'")
+
 api_key = os.getenv("GALAXY_API_KEY", "").strip()
 
 session = requests.Session()
@@ -75,19 +87,18 @@ def main():
     if given_history_id:
         histories = {given_history_id}
     else:
-        histories = (
-            {
-                h["id"]
-                for h in shared_histories
-                if h.get("name", "").startswith(starts_with)
-            }
-            if starts_with
-            else {h["id"] for h in shared_histories}
-        )
+        histories = set()
+        for h in shared_histories:
+            update_time = h.get("update_time")
+            if since_date and update_time and parse(update_time).date() < since_date:
+                continue
+            if starts_with and not h.get("name", "").startswith(starts_with):
+                continue
+            histories.add(h["id"])
 
     rows = []
     for history_id in histories:
-        print(f"\nProcessing History: {history_id}")
+        print(f"\nProcessing History id: '{history_id}'")
         try:
             datasets, username, slug, history_name = get_history_dataset(history_id)
             print(f"Found {len(datasets)} datasets in history '{history_name}'")

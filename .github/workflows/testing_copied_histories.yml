@@ -3,16 +3,20 @@ name: Run Testing Copied Histories
 on:
   workflow_dispatch:
     inputs:
-      STARTS_WITH:
+      starts_with:
         description: 'Search histories base on this prefix in name'
         required: false
         default: ''
         type: string
-      HISTORY_ID:
+      history_id:
         description: 'Find history by this ID'
         required: false
         default: ''
         type: string
+      since_date:
+        description: 'Only process items updated on or after this date (format: YYYY-MM-DD)'
+        required: false
+        default: '2025-01-01'
 
 jobs:
   test:
@@ -35,8 +39,9 @@ jobs:
       - name: Run testing_copied_histories
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            STARTS_WITH: ${{ github.event.inputs.STARTS_WITH }}
-            HISTORY_ID: ${{ github.event.inputs.HISTORY_ID }}
+            STARTS_WITH: ${{ github.event.inputs.starts_with }}
+            HISTORY_ID: ${{ github.event.inputs.history_id }}
+            SINCE_DATE: ${{ github.event.inputs.since_date }}
             GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
             GITHUB_REPO: ${{ github.repository }}
         run: |
