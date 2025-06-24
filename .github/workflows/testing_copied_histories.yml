@@ -1,0 +1,43 @@
+name: Run Testing Copied Histories
+
+on:
+  workflow_dispatch:
+    inputs:
+      STARTS_WITH:
+        description: 'Search histories base on this prefix in name'
+        required: false
+        default: ''
+        type: string
+      HISTORY_ID:
+        description: 'Find history by this ID'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+            python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+            pip install -r requirements_copied_histories.txt
+
+      - name: Run testing_copied_histories
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            STARTS_WITH: ${{ github.event.inputs.STARTS_WITH }}
+            HISTORY_ID: ${{ github.event.inputs.HISTORY_ID }}
+            GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
+            GITHUB_REPO: ${{ github.repository }}
+        run: |
+            python testing_copied_histories.py
