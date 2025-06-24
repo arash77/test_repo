@@ -99,6 +99,7 @@ def main():
                 print(f"Checking dataset: {dataset_id} ({dataset_name})")
                 inheritance_chain = check_inheritance_chain(dataset_id)
                 if inheritance_chain:
+                    print("⚠️ Inheritance chain found for dataset!")
                     rows.append(
                         {
                             "username": username,
