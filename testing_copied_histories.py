@@ -130,6 +130,22 @@ def main():
             except Exception as e:
                 print(f"Error checking inheritance chain: {e}")
 
+        if datasets:
+            rows.append(
+                {
+                    field: ""
+                    for field in [
+                        "username",
+                        "url_to_history",
+                        "history_id",
+                        "history_name",
+                        "dataset_id",
+                        "dataset_name",
+                        "inheritance_chain",
+                    ]
+                }
+            )
+
     if not rows:
         print("No inheritance chains found.")
         return
