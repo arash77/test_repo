@@ -150,6 +150,9 @@ def main():
         print("No inheritance chains found.")
         return
 
+    if rows and not any(rows[-1].values()):
+        rows.pop()
+
     fieldnames = [
         "username",
         "url_to_history",
